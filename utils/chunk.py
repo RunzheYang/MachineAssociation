@@ -12,8 +12,8 @@ class Chunk(sampler.Sampler):
         self.start = start
 
     def __iter__(self):
-        # return iter(torch.randperm(self.num_samples).long() + self.start)
-        return iter(range(self.start, self.start + self.num_samples))
+        return iter(torch.randperm(self.num_samples).long() + self.start)
+        # return iter(range(self.start, self.start + self.num_samples))
 
     def __len__(self):
         return self.num_samples
