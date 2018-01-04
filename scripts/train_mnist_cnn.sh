@@ -1,1 +1,1 @@
-python train_classifier.py --classifier mnist_cnn --epochs 15 --optimizer Adam --lr 1e-4 --batch-size 50 --test-batch 1000 --val-size 10000 --save classifier/saved/ --log classifier/logs/ --name mnist_cnn
+python train_classifier.py --classifier lenet --epochs 15 --optimizer Adam --lr 1e-4 --batch-size 50 --test-batch 1000 --val-size 10000 --save classifier/saved/ --log classifier/logs/ --name mnist_lenet
