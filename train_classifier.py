@@ -31,7 +31,7 @@ parser.add_argument('--save', default='classifier/saved/', metavar='SAVE',
                     help='path for saving trained classifiers')
 parser.add_argument('--log', default='classifier/logs/', metavar='LOG',
                     help='path for recording training informtion')
-parser.add_argument('--name', default='anonymous', metavar='name',
+parser.add_argument('--name', default='mnist_lenet', metavar='name',
                     help='specify a name for saving the model')
 
 args = parser.parse_args()
