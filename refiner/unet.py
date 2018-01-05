@@ -10,7 +10,9 @@ class UNet(nn.Module):
         self.is_deconv = is_deconv
         self.is_batchnorm = is_batchnorm
 
-        filters = [16, 32, 64]
+        filters = [16, 32, 64, 128]
+
+        self.paddingUp = nn.ZeroPad2d(2)
 
         # downsampling
         self.conv1 = unetConv2(1, filters[0], self.is_batchnorm)
@@ -22,15 +24,21 @@ class UNet(nn.Module):
         self.conv3 = unetConv2(filters[1], filters[2], self.is_batchnorm)
         self.maxpool3 = nn.MaxPool2d(kernel_size=2)
 
+        self.center = unetConv2(filters[2], filters[3], self.is_batchnorm)
+
         # upsampling
         self.up_concat3 = unetUp(filters[3], filters[2], self.is_deconv)
         self.up_concat2 = unetUp(filters[2], filters[1], self.is_deconv)
         self.up_concat1 = unetUp(filters[1], filters[0], self.is_deconv)
 
+        self.paddingDown = nn.ZeroPad2d(-2)
+
         # final conv (without any concat)
         self.final = nn.Conv2d(filters[0], 1, 1)
 
     def forward(self, inputs):
+        inputs = self.paddingUp(inputs)
+
         conv1 = self.conv1(inputs)
         maxpool1 = self.maxpool1(conv1)
 
@@ -45,6 +53,8 @@ class UNet(nn.Module):
         up3 = self.up_concat3(conv3, center)
         up2 = self.up_concat2(conv2, up3)
         up1 = self.up_concat1(conv1, up2)
+
+        up1 = self.paddingDown(up1)
 
         final = self.final(up1)
 

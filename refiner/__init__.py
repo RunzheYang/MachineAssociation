@@ -1,7 +1,7 @@
 from .unet import UNet
 
 
-def get_classifier(model):
+def get_refiner(model):
     if model == 'unet':
         return UNet()
     else:
