@@ -1,0 +1,2 @@
+python test/test_refiner.py --batch-size 64 --test-batch 64 --test-size 200 --classifier-path classifier/saved/  --classifier-name mnist_lenet --refiner-path refiner/saved/  --refiner-name mnist_unet
+python test/test_refiner.py --batch-size 64 --test-batch 64 --test-size 200 --classifier-path classifier/saved/  --classifier-name mnist_lenet --refiner-path refiner/saved/  --refiner-name mnist_unet --on-test

@@ -59,7 +59,7 @@ class UNet(nn.Module):
         final = self.final(up1)
 
         # rescale the output to grayscale image
-        final = F.sigmoid(final)
+        final = F.sigmoid(10*final)
 
         return final
 
@@ -157,4 +157,3 @@ class unetUp(nn.Module):
         padding = 2 * [offset // 2, offset // 2]
         outputs1 = F.pad(inputs1, padding)
         return self.conv(torch.cat([outputs1, outputs2], 1))
-

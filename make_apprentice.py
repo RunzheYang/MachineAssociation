@@ -97,7 +97,7 @@ for data, target in test_loader:
     else:
         apprentice_target = torch.cat((apprentice_target, target), dim=0)
 
-print(apprentice_data.size(), apprentice_target.size())
+print('There are {} instances in the apprentice dataset'.format(apprentice_data.size(0)))
 
 apprentice_dateset = (apprentice_data, apprentice_target)
 with open('./data/mnist_apprentice.data', 'wb') as f:
