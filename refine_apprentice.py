@@ -18,7 +18,7 @@ parser.add_argument('--refiner', default='unet', metavar='RFN',
 parser.add_argument('--lbd', type=float, default=1.0, metavar='LAMBDA',
                     help='coefficient for balancing simplicity and effectiveness')
 
-parser.add_argument('--epochs', type=int, default=15, metavar='EPN',
+parser.add_argument('--epochs', type=int, default=2000, metavar='EPN',
                     help='number of epochs to train')
 parser.add_argument('--optimizer', default='Adam', metavar='OPT',
                     help='optimizer: Adam | RMSprop')
@@ -103,31 +103,27 @@ for epoch in range(args.epochs):
         plotter.update_loss(cnt, loss.data[0])
         loss.backward()
         optimizer.step()
-
-
-        if cnt % 1000 == 0:
-            output = classifier(refined_data)
-            prediction = output.data.max(1)[1]
-            train_acc = prediction.eq(target.data).cpu().sum() / args.batch_size * 100
-
-            val_acc = 0.0
-            for val_data, val_target in test_loader:
-                if use_cuda:
-                    val_data, val_target = val_data.cuda(), val_target.cuda()
-                val_data, val_target = Variable(val_data, volatile=True), Variable(val_target)
-                refined_data = refiner(val_data)
-                output = classifier(refined_data)
-                prediction = output.data.max(1)[1]
-                val_acc += prediction.eq(val_target.data).cpu().sum()
-            val_acc = 100. * val_acc / len(test_loader.dataset)
-
-            plotter.update_acc(cnt, train_acc, val_acc)
-            logger.update(cnt, loss, train_acc, val_acc)
-
-            print('Train Step: {}\tLoss: {:.3f}\tTrain Acc: {:.3f}\tVal Acc: {:.3f}'.format(
-                cnt, loss.data[0], train_acc, val_acc))
-
         cnt += 1
+    output = classifier(refined_data)
+    prediction = output.data.max(1)[1]
+    train_acc = prediction.eq(target.data).cpu().sum() / args.batch_size * 100
+
+    val_acc = 0.0
+    for val_data, val_target in test_loader:
+        if use_cuda:
+            val_data, val_target = val_data.cuda(), val_target.cuda()
+        val_data, val_target = Variable(val_data, volatile=True), Variable(val_target)
+        refined_data = refiner(val_data)
+        output = classifier(refined_data)
+        prediction = output.data.max(1)[1]
+        val_acc += prediction.eq(val_target.data).cpu().sum()
+    val_acc = 100. * val_acc / len(test_loader.dataset)
+
+    plotter.update_acc(cnt, train_acc, val_acc)
+    logger.update(cnt, loss, train_acc, val_acc)
+
+    print('Train Step: {}\tLoss: {:.3f}\tTrain Acc: {:.3f}\tVal Acc: {:.3f}'.format(
+        cnt, loss.data[0], train_acc, val_acc))
 
 # test
 classifier.eval()
