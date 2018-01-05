@@ -1,4 +1,5 @@
 import argparse
+import copy
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -36,6 +37,11 @@ parser.add_argument('--classifier-path', default='classifier/saved/', metavar='C
 parser.add_argument('--classifier-name', default='mnist_lenet', metavar='name',
                     help='specify the name of used classifier')
 
+parser.add_argument('--delta', default='raw_l1', metavar='DELTA',
+                    help='delta is the similarity distance: raw_l1 | feature_l1')
+parser.add_argument('--eta', default='nll', metavar='ETA',
+                    help='eta is the efficacy loss: nll | entropy')
+
 parser.add_argument('--save', default='refiner/saved/', metavar='SAVE',
                     help='path for saving trained refiner')
 parser.add_argument('--log', default='refiner/logs/', metavar='LOG',
@@ -57,10 +63,23 @@ refiner = get_refiner(args.refiner)
 if use_cuda: refiner.cuda()
 
 # define similarity distance
-delta = lambda clf, rfd, d: torch.norm(rfd-d, p=1)/rfd.size(0)
+if args.delta == "raw_l1":
+    def delta(clf, rfd, d):
+        return torch.norm(rfd-d, p=1)/rfd.view(-1,1).size(0)
+elif args.delta == "feature_l1":
+    def delta(clf, rfd, d):
+            f1 = copy.deepcopy(clf)(rfd, extract_feature=True)
+            f2 = copy.deepcopy(clf)(d, extract_feature=True)
+            return torch.norm(f1 - f2, p=1)/f1.view(-1,1).size(0)
+else:
+    print("delta {} is not defined".format(args.delta))
 
 # define efficacy loss
-eta = lambda clf, rfd, tar: F.nll_loss(clf(rfd), tar)
+if args.eta == "nll":
+    def eta(clf, rfd, tar):
+        return F.nll_loss(clf(rfd), tar)
+else:
+    print("eta {} is not defined".format(args.eta))
 
 # get training, validation, and test dataset
 
@@ -103,30 +122,30 @@ for epoch in range(args.epochs):
         plotter.update_loss(cnt, loss.data[0])
         loss.backward()
         optimizer.step()
+        if cnt % 100 == 0:
+            refined_data = refined_data.detach()
+            refined_data.volatile=True
+            output = classifier(refined_data)
+            prediction = output.data.max(1)[1]
+            train_acc = prediction.eq(target.data).cpu().sum() / prediction.size(0) * 100
+
+            val_acc = 0.0
+            for val_data, val_target in test_loader:
+                if use_cuda:
+                    val_data, val_target = val_data.cuda(), val_target.cuda()
+                val_data, val_target = Variable(val_data, volatile=True), Variable(val_target)
+                refined_data = refiner(val_data)
+                output = classifier(refined_data)
+                prediction = output.data.max(1)[1]
+                val_acc += prediction.eq(val_target.data).cpu().sum()
+            val_acc = 100. * val_acc / args.test_size
+
+            plotter.update_acc(cnt, train_acc, val_acc)
+            logger.update(cnt, loss, train_acc, val_acc)
+
+            print('Train Step: {}\tLoss: {:.3f}\tTrain Acc: {:.3f}\tVal Acc: {:.3f}'.format(
+                cnt, loss.data[0], train_acc, val_acc))
         cnt += 1
-    refined_data = refined_data.detach()
-    refined_data.volatile=True
-    output = classifier(refined_data)
-    prediction = output.data.max(1)[1]
-    train_acc = prediction.eq(target.data).cpu().sum() / prediction.size(0) * 100
-
-    val_acc = 0.0
-    for val_data, val_target in test_loader:
-        if use_cuda:
-            val_data, val_target = val_data.cuda(), val_target.cuda()
-        val_data, val_target = Variable(val_data, volatile=True), Variable(val_target)
-        refined_data = refiner(val_data)
-        output = classifier(refined_data)
-        prediction = output.data.max(1)[1]
-        val_acc += prediction.eq(val_target.data).cpu().sum()
-    val_acc = 100. * val_acc / args.test_size
-
-    plotter.update_acc(cnt, train_acc, val_acc)
-    logger.update(cnt, loss, train_acc, val_acc)
-
-    print('Train Step: {}\tLoss: {:.3f}\tTrain Acc: {:.3f}\tVal Acc: {:.3f}'.format(
-        cnt, loss.data[0], train_acc, val_acc))
-
 # test
 classifier.eval()
 refiner.eval()

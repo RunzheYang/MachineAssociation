@@ -18,11 +18,12 @@ class LeNet(nn.Module):
         self.fc1 = nn.Linear(64 * 7 * 7, 1024)
         self.fc2 = nn.Linear(1024, 10)
 
-    def forward(self, x, dropout=True):
+    def forward(self, x, dropout=True, extract_feature=False):
         dropout = dropout and self.training
         x = F.max_pool2d(F.relu(self.conv1(x)), 2)
         x = F.max_pool2d(F.relu(self.conv2(x)), 2)
         x = x.view(-1, 64 * 7 * 7)
+        if extract_feature: return x
         x = F.relu(self.fc1(x))
         x = F.dropout(x, training=dropout)
         x = self.fc2(x)
