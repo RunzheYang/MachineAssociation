@@ -57,7 +57,7 @@ refiner = get_refiner(args.refiner)
 if use_cuda: refiner.cuda()
 
 # define similarity distance
-delta = lambda clf, rfd, d: torch.norm(rfd-d, p=1)
+delta = lambda clf, rfd, d: torch.norm(rfd-d, p=1)/rfd.size(0)
 
 # define efficacy loss
 eta = lambda clf, rfd, tar: F.nll_loss(clf(rfd), tar)
