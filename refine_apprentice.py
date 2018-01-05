@@ -3,7 +3,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from torchvision import datasets, transforms
+from utils.apprentice_loader import mnist
+from torchvision import transforms
 from torch.autograd import Variable
 
 from classifier import get_classifier
@@ -13,6 +14,11 @@ from utils import chunk, monitor
 parser = argparse.ArgumentParser(description='Train the classifier')
 parser.add_argument('--classifier', default='lenet', metavar='CLF',
                     help='classifier: lenet')
+parser.add_argument('--refiner', default='unet', meta='RFN',
+                    help='refiner: unet')
+
+parser.add_argument('--lambda', type=float, default=1.0, metavar='LAMBDA',
+                    help='coefficient for balancing simplicity and effectiveness')
 
 parser.add_argument('--epochs', type=int, default=15, metavar='EPN',
                     help='number of epochs to train')
@@ -22,16 +28,18 @@ parser.add_argument('--lr', type=float, default=1e-4, metavar='LR',
                     help='learning rate')
 parser.add_argument('--batch-size', type=int, default=50, metavar='BS',
                     help='input batch size for training')
-parser.add_argument('--test-batch', type=int, default=1000, metavar='TB',
+parser.add_argument('--test-batch', type=int, default=100, metavar='TB',
                     help='input batch size for testing')
-parser.add_argument('--val-size', type=int, default=10000, metavar='VS',
+parser.add_argument('--test-size', type=int, default=200, metavar='VS',
                     help='size of validation set')
 
-parser.add_argument('--save', default='classifier/saved/', metavar='SAVE',
+parser.add_argument('--classifier_path', default='classifier/saved/', metavar='CP',
                     help='path for saving trained classifiers')
-parser.add_argument('--log', default='classifier/logs/', metavar='LOG',
+parser.add_argument('--classifier_path', default='refiner/saved/', metavar='SAVE',
+                    help='path for saving trained refiner')
+parser.add_argument('--log', default='refiner/logs/', metavar='LOG',
                     help='path for recording training informtion')
-parser.add_argument('--name', default='mnist_lenet', metavar='name',
+parser.add_argument('--name', default='mnist_unet', metavar='name',
                     help='specify a name for saving the model')
 
 args = parser.parse_args()
@@ -45,22 +53,17 @@ if use_cuda: model.cuda()
 
 # get training, validation, and test dataset
 
-train_set = datasets.MNIST('./data', train=True, download=True, transform=transforms.ToTensor())
-test_set = datasets.MNIST('./data', train=False, download=True, transform=transforms.ToTensor())
-train_num = len(train_set) - args.val_size
+dataset = mnist.APPRENTICE('./data/', transform=transforms.ToTensor())
+train_size = len(dataset) - args.test_size
 
 train_loader = torch.utils.data.DataLoader(
-    train_set,
-    batch_size=args.batch_size, sampler=chunk.Chunk(train_num, 0))
-
-val_loader = torch.utils.data.DataLoader(
-    train_set,
-    batch_size=args.test_batch,
-    sampler=chunk.Chunk(args.val_size, train_num))
+    dataset,
+    batch_size=args.batch_size, sampler=chunk.Chunk(train_size, 0))
 
 test_loader = torch.utils.data.DataLoader(
-    test_set,
-    batch_size=args.test_batch, shuffle=True)
+    dataset,
+    batch_size=args.test_batch,
+    sampler=chunk.Chunk(args.test_size, train_size))
 
 # configure optimizer
 optimizer = None

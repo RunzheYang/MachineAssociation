@@ -30,10 +30,10 @@ class Plotter(object):
         if self.acc_window == None:
             self.acc_window = self.vis.line(X=torch.Tensor([cnt]).cpu(),
                                             Y=torch.Tensor([train_acc, val_acc]).unsqueeze(0).cpu(),
-                                              opts=dict(xlabel='iteration',
-                                                        ylabel='accuracy',
-                                                        title='Accuracy - ' + self.name,
-                                                        legend=['train_acc', 'val_acc']))
+                                            opts=dict(xlabel='iteration',
+                                                      ylabel='accuracy',
+                                                      title='Accuracy - ' + self.name,
+                                                      legend=['train_acc', 'val_acc']))
         else:
             self.vis.line(
                 X=torch.Tensor([cnt]).cpu(),
@@ -41,7 +41,7 @@ class Plotter(object):
                 win=self.acc_window,
                 update='append')
 
-    
+
 class Logger(object):
 
     def __init__(self, save_path, name):

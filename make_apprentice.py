@@ -41,13 +41,12 @@ if use_cuda:
 train_set = datasets.MNIST('./data', train=True, transform=transforms.ToTensor())
 test_set = datasets.MNIST('./data', train=False, transform=transforms.ToTensor())
 
-
 train_loader = torch.utils.data.DataLoader(
-                train_set,
-                batch_size=args.batch_size, shuffle=True)
+    train_set,
+    batch_size=args.batch_size, shuffle=True)
 test_loader = torch.utils.data.DataLoader(
-                test_set,
-                batch_size=args.batch_size, shuffle=True)
+    test_set,
+    batch_size=args.batch_size, shuffle=True)
 
 # test
 classifier.eval()
@@ -60,7 +59,7 @@ for data, target in train_loader:
     if use_cuda:
         data, target = data.cuda(), target.cuda()
     output = classifier(Variable(data, volatile=True)).data
-    entropy = (-torch.exp(output)*output).sum(dim=1)
+    entropy = (-torch.exp(output) * output).sum(dim=1)
     target_mask = entropy.gt(args.entropy_threshold)
     data_mask = target_mask.view(-1, 1, 1, 1).expand(data.size())
     data = torch.masked_select(data, data_mask).view(-1, data.size(1), data.size(2), data.size(3)).cpu()
@@ -81,7 +80,7 @@ for data, target in test_loader:
     if use_cuda:
         data, target = data.cuda(), target.cuda()
     output = classifier(Variable(data, volatile=True)).data
-    entropy = (-torch.exp(output)*output).sum(dim=1)
+    entropy = (-torch.exp(output) * output).sum(dim=1)
     target_mask = entropy.gt(args.entropy_threshold)
     data_mask = target_mask.view(-1, 1, 1, 1).expand(data.size())
     data = torch.masked_select(data, data_mask).view(-1, data.size(1), data.size(2), data.size(3)).cpu()
