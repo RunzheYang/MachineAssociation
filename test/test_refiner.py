@@ -62,10 +62,12 @@ classifier.eval()
 refiner.eval()
 if args.on_test:
     data, target = iter(test_loader).next()
-    plt_title = ('Apprentice Test Data', 'Refined Test Data - {}'.format(args.refiner_name))
+    plt_title = ('Apprentice Test Data - {}'.format(args.refiner_name),
+                 'Refined Test Data - {}'.format(args.refiner_name))
 else:
     data, target = iter(train_loader).next()
-    plt_title = ('Apprentice Traning Data', 'Refined Training Data - {}'.format(args.refiner_name))
+    plt_title = ('Apprentice Traning Data - {}'.format(args.refiner_name),
+                 'Refined Training Data - {}'.format(args.refiner_name))
 
 if use_cuda:
     data, target = data.cuda(), target.cuda()

@@ -59,7 +59,7 @@ class UNet(nn.Module):
         final = self.final(up1)
 
         # rescale the output to grayscale image
-        final = F.sigmoid(10*final)
+        final = F.sigmoid(100*final)
 
         return final
 
