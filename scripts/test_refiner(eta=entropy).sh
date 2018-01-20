@@ -1,0 +1,2 @@
+python test/test_refiner.py --batch-size 64 --test-batch 64 --test-size 200 --classifier-path classifier/saved/  --classifier-name mnist_lenet --refiner-path refiner/saved/  --refiner-name entropy_0.90
+python test/test_refiner.py --batch-size 64 --test-batch 64 --test-size 200 --classifier-path classifier/saved/  --classifier-name mnist_lenet --refiner-path refiner/saved/  --refiner-name entropy_0.90 --on-test

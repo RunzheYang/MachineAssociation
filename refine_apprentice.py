@@ -78,6 +78,10 @@ else:
 if args.eta == "nll":
     def eta(clf, rfd, tar):
         return F.nll_loss(clf(rfd), tar)
+elif args.eta == 'entropy':
+    def eta(clf, rfd, tar):
+        output = clf(rfd)
+        return (-torch.exp(output) * output).sum() / output.size(0)
 else:
     print("eta {} is not defined".format(args.eta))
 

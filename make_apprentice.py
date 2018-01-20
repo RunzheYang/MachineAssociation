@@ -20,6 +20,9 @@ parser.add_argument('--batch-size', type=int, default=100, metavar='BS',
 parser.add_argument('--entropy-threshold', type=float, default=0.3, metavar="ET",
                     help='entropy threshold for selecting apprentice data')
 
+parser.add_argument('--augment', default=False, action="store_true",
+                    help='augment data for refiner training / testing')
+
 parser.add_argument('--save', default='classifier/saved/', metavar='SAVE',
                     help='path for saving trained classifiers')
 parser.add_argument('--name', default='mnist_lenet', metavar='name',
@@ -96,6 +99,11 @@ for data, target in test_loader:
         apprentice_target = target
     else:
         apprentice_target = torch.cat((apprentice_target, target), dim=0)
+
+if args.augment:
+    apprentice_data.repeat(3, 1, 1, 1)
+    apprentice_target.repeat(3, 1)
+    apprentice_data += torch.randn(apprentice_data.size())*0.001
 
 print('There are {} instances in the apprentice dataset'.format(apprentice_data.size(0)))
 
