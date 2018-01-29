@@ -1,0 +1,1 @@
+python train_expert.py --classifier lenet --epochs 15 --optimizer Adam --lr 1e-4 --batch-size 50 --test-batch 1000 --val-size 9195 --test-size 9795 --save classifier/saved/ --log classifier/logs/ --name mnist_lenet_expert

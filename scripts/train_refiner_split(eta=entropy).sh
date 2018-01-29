@@ -1,0 +1,1 @@
+python refine_apprentice.py --refiner unet --delta feature_l1 --eta entropy --lbd 0.15 --epochs 240 --optimizer Adam --lr 1e-4 --batch-size 50 --test-batch 41 --test-size 410 --classifier-path classifier/saved/ --classifier-name mnist_lenet --save refiner/saved/ --log refiner/logs/ --name split_entropy_0.15

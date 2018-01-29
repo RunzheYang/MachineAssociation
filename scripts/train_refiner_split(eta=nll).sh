@@ -1,0 +1,1 @@
+python refine_apprentice.py --refiner unet --delta feature_l1 --eta nll --lbd 0.55 --epochs 120 --optimizer Adam --lr 1e-4 --batch-size 50 --test-batch 41 --test-size 410 --classifier-path classifier/saved/ --classifier-name mnist_lenet --save refiner/saved/ --log refiner/logs/ --name split_nll_0.55
