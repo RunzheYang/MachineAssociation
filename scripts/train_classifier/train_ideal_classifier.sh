@@ -1,0 +1,5 @@
+python train_ideal.py --classifier lenet --epochs 10 --optimizer Adam --lr 1e-4 --batch-size 50 --test-batch 1000 --val-size 250 --test-size 2000 --save classifier/saved/ --log classifier/logs/ --font times --name ideal_times
+python train_ideal.py --classifier lenet --epochs 10 --optimizer Adam --lr 1e-4 --batch-size 50 --test-batch 1000 --val-size 250 --test-size 2000 --save classifier/saved/ --log classifier/logs/ --font bradly --name ideal_bradly
+python train_ideal.py --classifier lenet --epochs 10 --optimizer Adam --lr 1e-4 --batch-size 50 --test-batch 1000 --val-size 250 --test-size 2000 --save classifier/saved/ --log classifier/logs/ --font brush --name ideal_brush
+python train_ideal.py --classifier lenet --epochs 10 --optimizer Adam --lr 1e-4 --batch-size 50 --test-batch 1000 --val-size 250 --test-size 2000 --save classifier/saved/ --log classifier/logs/ --font hannotate --name ideal_hannotate
+python train_ideal.py --classifier lenet --epochs 10 --optimizer Adam --lr 1e-4 --batch-size 50 --test-batch 1000 --val-size 250 --test-size 2000 --save classifier/saved/ --log classifier/logs/ --font typewriter --name ideal_typewriter
