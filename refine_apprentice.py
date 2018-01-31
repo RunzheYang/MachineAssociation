@@ -5,7 +5,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from utils.apprentice_loader import mnist
-from torchvision import transforms
+from torchvision import transforms, datasets
 from torch.autograd import Variable
 
 from refiner import get_refiner
@@ -29,8 +29,10 @@ parser.add_argument('--batch-size', type=int, default=50, metavar='BS',
                     help='input batch size for training')
 parser.add_argument('--test-batch', type=int, default=100, metavar='TB',
                     help='input batch size for testing')
+parser.add_argument('--train-size', type=int, default=60000, metavar='TS',
+                    help='size of training set')
 parser.add_argument('--test-size', type=int, default=200, metavar='VS',
-                    help='size of validation set')
+                    help='size of test & validation set')
 
 parser.add_argument('--classifier-path', default='classifier/saved/', metavar='CP',
                     help='path for used classifier')
@@ -87,17 +89,30 @@ else:
 
 # get training, validation, and test dataset
 
-dataset = mnist.APPRENTICE('./data')
-train_size = len(dataset) - args.test_size
+# # dataset = mnist.APPRENTICE('./data')
+# dataset = mnist.EXPERT('./data')
+# train_size = len(dataset) - args.test_size
+#
+# train_loader = torch.utils.data.DataLoader(
+#     dataset,
+#     batch_size=args.batch_size, sampler=chunk.Chunk(train_size, 0))
+#
+# test_loader = torch.utils.data.DataLoader(
+#     dataset,
+#     batch_size=args.test_batch,
+#     sampler=chunk.Chunk(args.test_size, train_size))
+
+train_set = datasets.MNIST('./data', train=True, download=True, transform=transforms.ToTensor())
+test_set = datasets.MNIST('./data', train=False, download=True, transform=transforms.ToTensor())
+# train_num = len(train_set) - args.test_size
 
 train_loader = torch.utils.data.DataLoader(
-    dataset,
-    batch_size=args.batch_size, sampler=chunk.Chunk(train_size, 0))
+    train_set,
+    batch_size=args.batch_size, sampler=chunk.Chunk(args.train_size, 0))
 
 test_loader = torch.utils.data.DataLoader(
-    dataset,
-    batch_size=args.test_batch,
-    sampler=chunk.Chunk(args.test_size, train_size))
+    test_set,
+    batch_size=args.test_batch, shuffle=True)
 
 # configure optimizer
 optimizer = None

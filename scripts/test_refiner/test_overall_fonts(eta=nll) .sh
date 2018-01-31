@@ -1,2 +1,48 @@
-python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 9795 --classifier-path classifier/saved/  --classifier-name mnist_lenet --refiner-path refiner/saved/  --refiner-name split_nll_0.55
-python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 9795 --classifier-path classifier/saved/  --classifier-name mnist_lenet --refiner-path refiner/saved/  --refiner-name split_nll_0.55 --on-test
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 410 --classifier-path classifier/saved/  --classifier-name ideal_times --refiner-path refiner/saved/  --refiner-name times_nll_0.25
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 410 --classifier-path classifier/saved/  --classifier-name ideal_times --refiner-path refiner/saved/  --refiner-name times_nll_0.25 --on-test
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 410 --classifier-path classifier/saved/  --classifier-name ideal_bradly --refiner-path refiner/saved/  --refiner-name bradly_nll_0.35
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 410 --classifier-path classifier/saved/  --classifier-name ideal_bradly --refiner-path refiner/saved/  --refiner-name bradly_nll_0.35 --on-test
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 410 --classifier-path classifier/saved/  --classifier-name ideal_brush --refiner-path refiner/saved/  --refiner-name brush_nll_0.40
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 410 --classifier-path classifier/saved/  --classifier-name ideal_brush --refiner-path refiner/saved/  --refiner-name brush_nll_0.40 --on-test
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 410 --classifier-path classifier/saved/  --classifier-name ideal_hannotate --refiner-path refiner/saved/  --refiner-name hannotate_nll_0.15
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 410 --classifier-path classifier/saved/  --classifier-name ideal_hannotate --refiner-path refiner/saved/  --refiner-name hannotate_nll_0.15 --on-test
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 410 --classifier-path classifier/saved/  --classifier-name ideal_typewriter --refiner-path refiner/saved/  --refiner-name typewriter_nll_0.25
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 410 --classifier-path classifier/saved/  --classifier-name ideal_typewriter --refiner-path refiner/saved/  --refiner-name typewriter_nll_0.25 --on-test
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 9795 --classifier-path classifier/saved/  --classifier-name ideal_mixall --refiner-path refiner/saved/  --refiner-name mixall_nll_0.25
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 9795 --classifier-path classifier/saved/  --classifier-name ideal_mixall --refiner-path refiner/saved/  --refiner-name mixall_nll_0.25 --on-test
+
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_mixall --refiner-path refiner/saved/  --refiner-name mixall_nll_0.55_whole
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_mixall --refiner-path refiner/saved/  --refiner-name mixall_nll_0.55_whole --on-test
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_times --refiner-path refiner/saved/  --refiner-name times_nll_0.55_whole
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_times --refiner-path refiner/saved/  --refiner-name times_nll_0.55_whole --on-test
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_bradly --refiner-path refiner/saved/  --refiner-name bradly_nll_0.55_whole
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_bradly --refiner-path refiner/saved/  --refiner-name bradly_nll_0.55_whole --on-test
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_brush --refiner-path refiner/saved/  --refiner-name brush_nll_0.55_whole
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_brush --refiner-path refiner/saved/  --refiner-name brush_nll_0.55_whole --on-test
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_hannotate --refiner-path refiner/saved/  --refiner-name hannotate_nll_0.55_whole
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_hannotate --refiner-path refiner/saved/  --refiner-name hannotate_nll_0.55_whole --on-test
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_typewriter --refiner-path refiner/saved/  --refiner-name typewriter_nll_0.55_whole
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_typewriter --refiner-path refiner/saved/  --refiner-name typewriter_nll_0.55_whole --on-test
+
+
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_typewriter --refiner-path refiner/saved/  --refiner-name typewriter_nll_0.56_whole
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_typewriter --refiner-path refiner/saved/  --refiner-name typewriter_nll_0.56_whole --on-test
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_typewriter --refiner-path refiner/saved/  --refiner-name typewriter_nll_0.57_whole
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_typewriter --refiner-path refiner/saved/  --refiner-name typewriter_nll_0.57_whole --on-test
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_typewriter --refiner-path refiner/saved/  --refiner-name typewriter_nll_0.58_whole
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_typewriter --refiner-path refiner/saved/  --refiner-name typewriter_nll_0.58_whole --on-test
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_typewriter --refiner-path refiner/saved/  --refiner-name typewriter_nll_0.59_whole
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_typewriter --refiner-path refiner/saved/  --refiner-name typewriter_nll_0.59_whole --on-test
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_typewriter --refiner-path refiner/saved/  --refiner-name typewriter_nll_0.60_whole
+# python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_typewriter --refiner-path refiner/saved/  --refiner-name typewriter_nll_0.60_whole --on-test
+
+
+python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_typewriter --refiner-path refiner/saved/  --refiner-name typewriter_nll_0.55_100 --on-test
+python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_typewriter --refiner-path refiner/saved/  --refiner-name typewriter_nll_0.55_200 --on-test
+python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_typewriter --refiner-path refiner/saved/  --refiner-name typewriter_nll_0.55_500 --on-test
+python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_typewriter --refiner-path refiner/saved/  --refiner-name typewriter_nll_0.55_1000 --on-test
+python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_typewriter --refiner-path refiner/saved/  --refiner-name typewriter_nll_0.55_2000 --on-test
+python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_typewriter --refiner-path refiner/saved/  --refiner-name typewriter_nll_0.55_5000 --on-test
+python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_typewriter --refiner-path refiner/saved/  --refiner-name typewriter_nll_0.55_10000 --on-test
+python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_typewriter --refiner-path refiner/saved/  --refiner-name typewriter_nll_0.55_20000 --on-test
+python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 10000 --classifier-path classifier/saved/  --classifier-name ideal_typewriter --refiner-path refiner/saved/  --refiner-name typewriter_nll_0.55_50000 --on-test

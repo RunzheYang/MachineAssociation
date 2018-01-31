@@ -24,6 +24,8 @@ parser.add_argument('--batch-size', type=int, default=50, metavar='BS',
                     help='input batch size for training')
 parser.add_argument('--test-batch', type=int, default=1000, metavar='TB',
                     help='input batch size for testing')
+parser.add_argument('--train-size', type=int, default=1000, metavar='TS',
+                    help='size of training set')
 parser.add_argument('--val-size', type=int, default=10000, metavar='VS',
                     help='size of validation set')
 
@@ -51,12 +53,12 @@ train_num = len(train_set) - args.val_size
 
 train_loader = torch.utils.data.DataLoader(
     train_set,
-    batch_size=args.batch_size, sampler=chunk.Chunk(train_num, 0))
+    batch_size=args.batch_size, sampler=chunk.Chunk(args.train_size, 0))
 
-val_loader = torch.utils.data.DataLoader(
-    train_set,
-    batch_size=args.test_batch,
-    sampler=chunk.Chunk(args.val_size, train_num))
+# val_loader = torch.utils.data.DataLoader(
+#     train_set,
+#     batch_size=args.test_batch,
+#     sampler=chunk.Chunk(args.val_size, train_num))
 
 test_loader = torch.utils.data.DataLoader(
     test_set,
@@ -89,12 +91,12 @@ for epoch in range(args.epochs):
 
         plotter.update_loss(cnt, loss.data[0])
 
-        if cnt % 1000 == 0:
+        if cnt % 100 == 0:
             prediction = output.data.max(1)[1]
             train_acc = prediction.eq(target.data).cpu().sum() / args.batch_size * 100
 
             val_acc = 0.0
-            for val_data, val_target in val_loader:
+            for val_data, val_target in test_loader:
                 if use_cuda:
                     val_data, val_target = val_data.cuda(), val_target.cuda()
                 val_data, val_target = Variable(val_data, volatile=True), Variable(val_target)

@@ -48,3 +48,9 @@ print('typewriter', len(dataset))
 ideal_loader = torch.utils.data.DataLoader(
     dataset, batch_size=32, shuffle=True)
 vis.images(iter(ideal_loader).next()[0], opts=dict(title='Typewriter'))
+
+dataset = mnist.IDEAL('./data', 'mixall')
+print('mixall', len(dataset))
+ideal_loader = torch.utils.data.DataLoader(
+    dataset, batch_size=32, shuffle=True)
+vis.images(iter(ideal_loader).next()[0], opts=dict(title='mixall'))

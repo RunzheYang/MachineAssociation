@@ -3,7 +3,7 @@ import torch
 from torch.autograd import Variable
 import torch.nn.functional as F
 from utils.apprentice_loader import mnist
-from torchvision import transforms
+from torchvision import transforms, datasets
 from utils import chunk, monitor
 import visdom
 
@@ -48,17 +48,30 @@ refiner = torch.load("{}{}.pkl".format(args.refiner_path, args.refiner_name))
 if use_cuda: refiner.cuda()
 
 # prepare dataset
-dataset = mnist.EXPERT('./data')
-train_size = len(dataset) - args.test_size
+# dataset = mnist.APPRENTICE('./data')
+# dataset = mnist.EXPERT('./data')
+# train_size = len(dataset) - args.test_size
+#
+# train_loader = torch.utils.data.DataLoader(
+#     dataset,
+#     batch_size=args.batch_size, sampler=chunk.Chunk(train_size, 0))
+#
+# test_loader = torch.utils.data.DataLoader(
+#     dataset,
+#     batch_size=args.test_batch,
+#     sampler=chunk.Chunk(args.test_size, train_size))
+
+train_set = datasets.MNIST('./data', train=True, download=True, transform=transforms.ToTensor())
+test_set = datasets.MNIST('./data', train=False, download=True, transform=transforms.ToTensor())
+train_size = len(train_set)
 
 train_loader = torch.utils.data.DataLoader(
-    dataset,
-    batch_size=args.batch_size, sampler=chunk.Chunk(train_size, 0))
+    train_set,
+    batch_size=args.batch_size, shuffle=True)
 
 test_loader = torch.utils.data.DataLoader(
-    dataset,
-    batch_size=args.test_batch,
-    sampler=chunk.Chunk(args.test_size, train_size))
+    test_set,
+    batch_size=args.test_batch, shuffle=True)
 
 # visualize results
 vis = visdom.Visdom()
@@ -104,6 +117,7 @@ else:
         refined_prediction = refined_output.data.max(1)[1]
         original_correct += original_prediction.eq(target.data).cpu().sum()
         refined_correct += refined_prediction.eq(target.data).cpu().sum()
+    print('\n------------------\nRefiner: {}'.format(args.refiner_name))
     print('\nTrain Accuracy: {:.2f}%'.format(100. * original_correct / train_size))
     print('\nRefined Train Accuracy: {:.2f}%'.format(100. * refined_correct / train_size))
     print('\nTrain Entropy: {:.3f}'.format(original_entropy_sum / train_size))

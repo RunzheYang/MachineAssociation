@@ -1,2 +1,2 @@
-python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 9795 --classifier-path classifier/saved/  --classifier-name ideal_times --refiner-path refiner/saved/  --refiner-name times_nll_0.15
-python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 9795 --classifier-path classifier/saved/  --classifier-name ideal_times --refiner-path refiner/saved/  --refiner-name times_nll_0.15 --on-test
+python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 410 --classifier-path classifier/saved/  --classifier-name ideal_times --refiner-path refiner/saved/  --refiner-name times_entropy_0.15
+python test/test_overall.py --batch-size 64 --test-batch 64 --test-size 410 --classifier-path classifier/saved/  --classifier-name ideal_times --refiner-path refiner/saved/  --refiner-name times_entropy_0.15 --on-test

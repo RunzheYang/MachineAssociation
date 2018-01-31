@@ -19,7 +19,7 @@ from utils import chunk, monitor
 # settings
 parser = argparse.ArgumentParser(description='Train the classifier')
 parser.add_argument('--font', default='times', metavar='FONT',
-                    help='font type: times | bradly | brush | hannotate | typewriter')
+                    help='font type: times | bradly | brush | hannotate | typewriter | mixall')
 
 
 args = parser.parse_args()
@@ -33,19 +33,31 @@ imgs = []
 targets = []
 
 # get type fonts
-# angle = 0
-xoff, yoff = 2, 2
-for angle in range(-20, 20+1, 1):
-    for xoff in range(-2, 2+1, 1):
-        for yoff in range(-2, 2+1, 1):
-            for i in range(10):
-                im = IM.open("data/{}-digits/{}.png".format(args.font, i))
-                im = im.convert('L')
-                im = im.rotate(angle)
-                im = im.resize((28, 28), IM.ANTIALIAS)
-                im = ImageChops.offset(im, xoff, yoff)
-                imgs.append(np.array(im).reshape(1,28,28))
-                targets.append(i)
+if not args.font == "mixall":
+    for angle in range(-20, 20+1, 1):
+        for xoff in range(-2, 2+1, 1):
+            for yoff in range(-2, 2+1, 1):
+                for i in range(10):
+                    im = IM.open("data/{}-digits/{}.png".format(args.font, i))
+                    im = im.convert('L')
+                    im = im.rotate(angle)
+                    im = im.resize((28, 28), IM.ANTIALIAS)
+                    im = ImageChops.offset(im, xoff, yoff)
+                    imgs.append(np.array(im).reshape(1,28,28))
+                    targets.append(i)
+else:
+    for angle in range(-20, 20+1, 1):
+        for xoff in range(-2, 2+1, 1):
+            for yoff in range(-2, 2+1, 1):
+                for i in range(10):
+                    for font in ["times", "bradly", "brush", "hannotate", "typewriter"]:
+                        im = IM.open("data/{}-digits/{}.png".format(font, i))
+                        im = im.convert('L')
+                        im = im.rotate(angle)
+                        im = im.resize((28, 28), IM.ANTIALIAS)
+                        im = ImageChops.offset(im, xoff, yoff)
+                        imgs.append(np.array(im).reshape(1,28,28))
+                        targets.append(i)
 imgs = np.array(imgs, dtype=np.float)/255.0
 targets = np.array(targets)
 permutation = np.random.permutation(len(imgs))
